@@ -6,14 +6,15 @@
 
 
 //#include "ui_mainwindow.h"
-//#include <iostream>
+#include <iostream>
 
 /**/
 
 class Widget : public QWidget
 {
 public:
-    Widget(QImage img){
+    Widget(QImage img)
+    {
         this->img = img;
     }
 
@@ -43,7 +44,7 @@ protected:
         }
 
     }
-protected:
+public:
     void WriteFile()
     {
         QFile file("img.txt");
@@ -61,14 +62,43 @@ protected:
         file.close();
     }
 };
+/*
+//class Widget : public QWidget
+//{
+//protected:
+    void ReadFile()
+    {
+        QFile file("img.txt");
+        file.open(QIODevice::ReadOnly);
+        QTextStream in(&file);
+        //QTextStream out(&file);
+        QString line = in.readAll();
+        QChar ch;
+        while(!in.atEnd())
+        {
+            in >> ch;
+        }
+        file.close();
+
+
+    }
+//};
+
 /**/
 int main(int argc, char** argv )
 {
+    /*QFile file;
+    file.open(stdin, QFile::ReadOnly);
+
+    ReadFile();
+
+    return 0;*/
     QImage img("pixel100.jpg");
     QApplication a(argc, argv);
-    QWidget widget;
+    QWidget widget(QImage &img);
 
     widget.show();
 
     return a.exec();
 }
+/**/
