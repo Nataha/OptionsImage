@@ -13,7 +13,7 @@
 class Widget : public QWidget
 {
 public:
-    Widget(QImage img)
+    Widget(QImage &img)
     {
         this->img = img;
     }
@@ -95,7 +95,7 @@ int main(int argc, char** argv )
     return 0;*/
     QImage img("pixel100.jpg");
     QApplication a(argc, argv);
-    QWidget widget(QImage &img);
+    QWidget widget;
 
     widget.show();
 
