@@ -95,9 +95,10 @@ int main(int argc, char** argv )
     return 0;*/
     QImage img("pixel100.jpg");
     QApplication a(argc, argv);
-    QWidget widget;
+    Widget widget(img);
 
-    widget.show();
+    //widget.show();
+    widget.WriteFile();
 
     return a.exec();
 }
