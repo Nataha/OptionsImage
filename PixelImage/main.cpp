@@ -9,16 +9,22 @@
 //#include <iostream>
 
 /**/
+
 class Widget : public QWidget
 {
-    char matrix[100][100][3];
+public:
+    Widget(QImage img){
+        this->img = img;
+    }
 
+private:
+    char matrix[100][100][3];
+    QImage img;
 protected:
     void paintEvent(QPaintEvent *)
     {
-        QImage img("pixel100.jpg");
         QColor color;
-
+        img.load("pixel100.jpg");
         for(int i = 0; i < img.width(); ++i)
         {
             for(int j = 0; j < img.height(); ++j)
@@ -40,7 +46,6 @@ protected:
 protected:
     void WriteFile()
     {
-
         QFile file("img.txt");
         file.open(QIODevice::WriteOnly);
         QTextStream out(&file);
@@ -59,9 +64,11 @@ protected:
 /**/
 int main(int argc, char** argv )
 {
+    QImage img("pixel100.jpg");
     QApplication a(argc, argv);
-    //QWidget widget;
-    //widget.show();
+    QWidget widget;
+
+    widget.show();
 
     return a.exec();
 }
