@@ -16,14 +16,7 @@ public:
     Widget(QImage &img)
     {
         this->img = img;
-    }
 
-private:
-    char matrix[100][100][3];
-    QImage img;
-protected:
-    void paintEvent(QPaintEvent *)
-    {
         QColor color;
         img.load("pixel100.jpg");
         for(int i = 0; i < img.width(); ++i)
@@ -42,8 +35,12 @@ protected:
                 color.getRgb(&x, &y, &z);
             }
         }
-
     }
+
+private:
+    char matrix[100][100][3];
+    QImage img;
+
 public:
     void WriteFile()
     {
@@ -97,7 +94,7 @@ int main(int argc, char** argv )
     QApplication a(argc, argv);
     Widget widget(img);
 
-    //widget.show();
+    widget.show();
     widget.WriteFile();
 
     return a.exec();
