@@ -13,10 +13,16 @@ class Widget : public QWidget
 public:
     Widget()
     {
+<<<<<<< HEAD
         img.load("pixel100.jpg");
         width = img.width();
         height = img.height();
 
+=======
+        QImage img("pixel100.jpg");
+        width = img.width();
+        height = img.height();
+>>>>>>> c084c0c2c6f94701e997a5fa08f4f6486a6f6e1f
         for(int i = 0; i < width; ++i)
         {
             for(int j = 0; j < height; ++j)
@@ -37,6 +43,7 @@ public:
 private:
     unsigned char matrix[100][100][3];
     int width, height;
+<<<<<<< HEAD
     QImage img;
     //matrix transposition
 public:
@@ -64,12 +71,15 @@ public:
         }
     }
 
+=======
+>>>>>>> c084c0c2c6f94701e997a5fa08f4f6486a6f6e1f
 public:
     void WriteFile()
     {
         QFile file("img.txt");
         file.open(QIODevice::WriteOnly);
         bool f;
+<<<<<<< HEAD
 
         for (int i = 0; i < width; i++)
         {
@@ -88,6 +98,19 @@ public:
                                        (int)matrix[i][j][0]) + "," + QString::number(
                                        (int)matrix[i][j][1]) + "," + QString::number(
                                        (int)matrix[i][j][2]) + "]").toUtf8());
+=======
+        for (int i = 0; i < width; i++)
+        {
+            f = false;
+            for (int j = 0; j < height;j++)
+            {
+                if (f) {
+                    file.write(",");
+                } else {
+                    f = true;
+                }
+                file.write(QString("["+QString::number((int)matrix[i][j][0])+","+QString::number((int)matrix[i][j][1])+","+QString::number((int)matrix[i][j][2])+"]").toUtf8());
+>>>>>>> c084c0c2c6f94701e997a5fa08f4f6486a6f6e1f
             }
             file.write("\n");
         }
@@ -100,6 +123,15 @@ public:
 /**/
 int main(int argc, char** argv )
 {
+<<<<<<< HEAD
+=======
+    /*QFile file;
+    file.open(stdin, QFile::ReadOnly);
+
+    ReadFile();
+
+    return 0;*/
+>>>>>>> c084c0c2c6f94701e997a5fa08f4f6486a6f6e1f
     QApplication a(argc, argv);
     Widget widget;
 
@@ -109,4 +141,3 @@ int main(int argc, char** argv )
 
     return a.exec();
 }
-/**/
