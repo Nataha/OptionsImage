@@ -1,11 +1,9 @@
 #include <QtGui>
 #include <QApplication>
-
+#include <QRgb>
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
 
-
-//#include "ui_mainwindow.h"
 #include <iostream>
 
 /**/
@@ -13,17 +11,16 @@
 class Widget : public QWidget
 {
 public:
-    Widget(QImage &img)
+    Widget()
     {
-        this->img = img;
-
-        QColor color;
         img.load("pixel100.jpg");
-        for(int i = 0; i < img.width(); ++i)
+        width = img.width();
+        height = img.height();
+
+        for(int i = 0; i < width; ++i)
         {
-            for(int j = 0; j < img.height(); ++j)
+            for(int j = 0; j < height; ++j)
             {
-                img.pixel(i, j);
                 int x, y, z;
                 QRgb rgb = img.pixel(i,j);
                 x = qRed(rgb);
@@ -32,69 +29,82 @@ public:
                 matrix[i][j][0] = x;
                 matrix[i][j][1] = y;
                 matrix[i][j][2] = z;
-                color.getRgb(&x, &y, &z);
             }
         }
     }
 
+
 private:
-    char matrix[100][100][3];
+    unsigned char matrix[100][100][3];
+    int width, height;
     QImage img;
+    //matrix transposition
+public:
+    void TranMatrix()
+    {
+        for (int i = 0; i < width; i++)
+        {
+            for(int j = i; j < height; j++)
+            {
+                char r, g, b;
+                r = matrix[i][j][0];
+                g = matrix[i][j][1];
+                b = matrix[i][j][2];
+                matrix[i][j][0] = matrix[j][i][0];
+                matrix[i][j][1] = matrix[j][i][1];
+                matrix[i][j][2] = matrix[j][i][2];
+                matrix[j][i][0] = r;
+                matrix[j][i][1] = g;
+                matrix[j][i][2] = b;
+                //img.setPixel(i, j, QColor::fromRgb(matrix[j][i][0],matrix[j][i][1],matrix[j][i][2]).argb);
+                ///ошибка: 'class QColor' has no member named 'argb'
+                img.setPixel(i, j, qRgb(matrix[j][i][0],matrix[j][i][1],matrix[j][i][2]));//QImage::Format_ARGB32
+                //img.fill(qRgb(matrix[j][i][0],matrix[j][i][1],matrix[j][i][2]));
+            }
+        }
+    }
 
 public:
     void WriteFile()
     {
         QFile file("img.txt");
         file.open(QIODevice::WriteOnly);
-        QTextStream out(&file);
-        for (int i = 0; i < img.width(); i++)
+        bool f;
+
+        for (int i = 0; i < width; i++)
         {
-            for (int j = 0; j < img.height();j++)
+            f = false;
+            for (int j = 0; j < height; j++)
             {
-                out << matrix[i][j][0];
-                out << matrix[i][j][1];
-                out << matrix[i][j][2];
+                if (f)
+                {
+                    file.write(",");
+                }
+                else
+                {
+                    f = true;
+                }
+                file.write(QString("[" + QString::number(
+                                       (int)matrix[i][j][0]) + "," + QString::number(
+                                       (int)matrix[i][j][1]) + "," + QString::number(
+                                       (int)matrix[i][j][2]) + "]").toUtf8());
             }
+            file.write("\n");
         }
         file.close();
     }
 };
-/*
-//class Widget : public QWidget
-//{
-//protected:
-    void ReadFile()
-    {
-        QFile file("img.txt");
-        file.open(QIODevice::ReadOnly);
-        QTextStream in(&file);
-        //QTextStream out(&file);
-        QString line = in.readAll();
-        QChar ch;
-        while(!in.atEnd())
-        {
-            in >> ch;
-        }
-        file.close();
 
 
-    }
-//};
 
 /**/
 int main(int argc, char** argv )
 {
-    /*QFile file;
-    file.open(stdin, QFile::ReadOnly);
-
-    ReadFile();
-
-    return 0;*/
-    QImage img("pixel100.jpg");
     QApplication a(argc, argv);
-    Widget widget(img);
+    Widget widget;
 
     widget.show();
+    widget.TranMatrix();
     widget.WriteFile();
 
     return a.exec();
