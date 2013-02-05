@@ -42,11 +42,11 @@ private:
 public:
     void TranMatrix()
     {
+        unsigned char matrix2[100][100][3];
         for (int i = 0; i < width; i++)
         {
             for(int j = i; j < height; j++)
             {
-                unsigned char matrix2[100][100][3];
                 char r, g, b;
                 r = matrix[i][j][0];
                 g = matrix[i][j][1];
@@ -68,9 +68,12 @@ public:
 
                 //img.setPixel(i, j, QColor::fromRgb(matrix[j][i][0],matrix[j][i][1],matrix[j][i][2]).argb);
                 ///ошибка: 'class QColor' has no member named 'argb'
-                img.setPixel(i, j, qRgb(matrix[j][i][0],matrix[j][i][1],matrix[j][i][2]));
+                img.setPixel(i, j, qRgb(matrix[j][i][0],
+                                        matrix[j][i][1],
+                                        matrix[j][i][2]));
             }
         }
+
     }
 
 public:
