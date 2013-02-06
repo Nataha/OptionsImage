@@ -38,7 +38,7 @@ private:
     unsigned char matrix[100][100][3];
     int width, height;
     QImage img;
-    //matrix transposition
+//    matrix transposition
 public:
     void TranMatrix()
     {
@@ -54,9 +54,6 @@ public:
                 matrix[i][j][0] = matrix[j][i][0];
                 matrix[i][j][1] = matrix[j][i][1];
                 matrix[i][j][2] = matrix[j][i][2];
-                /*matrix[j][i][0] = r;
-                matrix[j][i][1] = g;
-                matrix[j][i][2] = b;*/
 
                 matrix2[j][i][0] = r;
                 matrix2[j][i][1] = g;
@@ -68,12 +65,22 @@ public:
 
                 //img.setPixel(i, j, QColor::fromRgb(matrix[j][i][0],matrix[j][i][1],matrix[j][i][2]).argb);
                 ///ошибка: 'class QColor' has no member named 'argb'
+            }
+        }
+
+    }
+public:
+    void CopyColorToImg()
+    {
+        for (int i = 0; i < width; i++)
+        {
+            for(int j = i; j < height; j++)
+            {
                 img.setPixel(i, j, qRgb(matrix[j][i][0],
                                         matrix[j][i][1],
                                         matrix[j][i][2]));
             }
         }
-
     }
 
 public:
@@ -117,6 +124,7 @@ int main(int argc, char** argv )
 
     widget.show();
     widget.TranMatrix();
+    widget.CopyColorToImg();
     widget.WriteFile();
 
     return a.exec();
