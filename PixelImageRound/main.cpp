@@ -13,37 +13,57 @@ class Widget : public QWidget
     {
     }*/
 private:
-    QString line;
     unsigned char matrix[100][100][3];
-    int width, height;
 public:
     void ReadFile()
     {
-        QFile file("new.txt");
+        QFile file("img.txt");
         file.open(QIODevice::ReadOnly);
-
-        QString line = file.readAll();
-        QStringList result;
-        while (!line.isNull()) {
-            line.remove(QRegExp("[],"));
-            result.append(line);
-            line = file.readAll();
-        }
-        for(int i = 0; i < width; i++)
-        {
-            for(int j = 0; j < height; j++)
-            {
-                QImage img;
-                img.setPixel(i, j, qRgb(matrix[i][j][0], matrix[i][j][1], matrix[i][j][2]));
-            }
-        }
-        qDebug() << result;
-        /*QString alldata = QString(file.readAll());
+        int r, g, b;
+        int i = 0, j = 0;
+//        QPainter paint;
+//        QImage img;
+        QString alldata = QString(file.readAll());
         QStringList lines = alldata.split("\n");
         foreach(QString s, lines)
         {
-            QStringList pixels = s.split(",");
-        }*/
+            QStringList pixels = s.split("],[");
+            i = 0;
+            foreach(QString d, pixels)
+            {
+                QStringList color = d.split(",");
+                QString str = color.at(0);
+                r = str.replace("[","").toInt();
+                g = color.at(1).toInt();
+                str = color.at(2);
+                b = str.replace("]","").toInt();
+
+                matrix[i][j][0] = r;
+                matrix[i][j][1] = g;
+                matrix[i][j][2] = b;
+                ++i;
+
+//                img.setPixel(i, j, qRgb(matrix[i][j][0], matrix[i][j][1], matrix[i][j][2]));
+//                paint.drawImage(i, j, img);
+            }
+            ++j;
+        }
+    }
+//public:
+    QImage Matrix2Image()
+    {
+        QImage img;
+//        int width, height;
+        img.width();
+        img.height();
+        for(int i = 0; i < img.width();  ++i)
+        {
+            for(int j = 0; j < img.height();  ++j)
+            {
+                img.setPixel(i, j, qRgb(matrix[i][j][0], matrix[i][j][1], matrix[i][j][2]));
+            }
+        }
+        return img;
     }
 };
 /**/
