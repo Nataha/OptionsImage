@@ -12,8 +12,24 @@ class Widget : public QWidget
     /*Widget()
     {
     }*/
-private:
-    unsigned char matrix[100][100][3];
+public:
+//    unsigned char matrix[100][100][3];
+    int*** create(int m, int n, int)
+    {
+        int*** matrix = new int**[m];
+        for(int i = 0; i < m; ++i)
+        {
+            matrix[i] = new int*[n];
+            for(int j = 0; j < n; ++j)
+            {
+                matrix[i][j] = new int[3];
+                for(int k = 0; k < 3; ++k)
+                    matrix[i][j][k] = 0;
+            }
+        }
+        return matrix;
+    }
+
 public:
     void ReadFile()
     {
@@ -52,18 +68,29 @@ public:
 //public:
     QImage Matrix2Image()
     {
-        QImage img;
-//        int width, height;
-        img.width();
-        img.height();
-        for(int i = 0; i < img.width();  ++i)
+        QImage img/*(matrix, 100, 100, QImage::Format_ARGB32)*/;
+//        QImage scaled = img.scaled(100, 100);
+//        QPixmap pix = QPixmap::fromImage(img);
+
+        int width, height;
+        matrix[width][height][3];
+        for(int i = 0; i < width;  ++i)
         {
-            for(int j = 0; j < img.height();  ++j)
+            for(int j = 0; j < height;  ++j)
             {
                 img.setPixel(i, j, qRgb(matrix[i][j][0], matrix[i][j][1], matrix[i][j][2]));
             }
         }
         return img;
+    }
+
+    void memfree(int*** matrix, int m, int n){
+            for(int i = 0; i < m ; ++i){
+                for(int j = 0; j < n; ++j)
+                            delete[] matrix[i][j];
+                delete[] matrix[i];
+              }
+        delete[] matrix;
     }
 };
 /**/
